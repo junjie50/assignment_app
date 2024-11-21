@@ -1,26 +1,17 @@
 # Designing and Building Scalable Web Applications / Course Project I Template
 
-Provides an endpoint for grading programming assignments. Has the functionality
-needed to create a grader image based on `grader-image` and to copy source code
-and test code to the image.
+## Running the system
+Run the command below in the root folder to start the application.
+**docker compose -f docker-compose.prod.yml up --build -d**
 
-When the grader API is run, the Docker daemon should be exposed to the grader
-API to allow running the created Docker images.
+## Testing the functionality of system
+With the application running in the back gound, run the following command.
+**docker compose run --rm --entrypoint=npx e2e-playwright playwright test**
 
-This is done by mapping the docker daemon socket to the grader api in the
-`docker-compose.yml` file, e.g.
+## Testing the performance of system
+With the application running in the back gound, run the follow command in k6 folder.
+**k6 run get-assignment-test.js**
+**k6 run submit-assignment-test.js**
 
-```
-# ...
-  grader-api:
-    build: grader-api
-    image: grader-api
-    restart: "no"
-    volumes:
-      - ./grader-api/:/app
-      - ./app-cache/:/app-cache
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    ports:
-      - 7000:7000
-# ...
-```
+
+# Service will be launch at localhost:7800
