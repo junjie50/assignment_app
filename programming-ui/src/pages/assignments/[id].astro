@@ -1,0 +1,26 @@
+---
+export const prerender = true;
+import Question from "../../components/Question.svelte";
+import Layout from "../../layout/Layout.astro";
+
+export const getStaticPaths = async () => {
+    const response = await fetch("http://programming-api:7777/assignments");
+    const lst = await response.json();
+    const data = lst.map((ea) => {
+        return {params:{
+            id:ea.id
+        }};
+    }
+    )
+  return data;
+}
+
+const id = Astro.params.id;
+const response = await fetch(`http://programming-api:7777/assignments/${id}`);
+const data = await response.json();
+const assignment = data[0];
+---
+<Layout> 
+    <Question client:only={"svelte"} {id} questionTitle={assignment.title} questionContent={assignment.handout}/>
+</Layout>
+
